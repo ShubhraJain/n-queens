@@ -122,7 +122,7 @@
         for (var i = 0; i < boardSize; i++) {
             // get each row
             var row = this.get(i);
-            // add value at given column index of a row
+            // add value at given column index of every row
             count += row[colIndex];
         }
 
@@ -154,16 +154,36 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+        var size = this.get('n');
+        var count = 0;
+        var rowIndex = 0; // since diagonal begins at first row as per the argument
+        var col = majorDiagonalColumnIndexAtFirstRow;
+
+        // major diagonal is made up of cooridnates (0,0)(1,1)(2,2).. so forth
+        for ( ; rowIndex < size && col < size; rowIndex++, col++) {
+            if (col >= 0) {
+                var row = this.get(rowIndex);
+                count += row[col];
+            }
+        }
+
+        return count > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+        var size = this.get('n');
+
+        for( var i = 1 - size; i < size; i++ ) {
+            if( this.hasMajorDiagonalConflictAt(i) ) {
+                return true;
+            }
+        }
+
+        return false;
     },
 
-
-
+    
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     //
