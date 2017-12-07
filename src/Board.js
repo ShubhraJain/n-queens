@@ -115,12 +115,36 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+        // get board size
+        var boardSize = this.get('n');
+        var count = 0;
+
+        for (var i = 0; i < boardSize; i++) {
+            // get each row
+            var row = this.get(i);
+            // add value at given column index of a row
+            count += row[colIndex];
+        }
+
+        return count > 1;
     },
+
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+        // get board size
+        var boardSize = this.get('n');
+
+        // iterate on each row of board  
+        for (var i = 0; i < boardSize; i++) {
+
+            // check if any row has a conflict and return true if there is any conflict
+            if (this.hasColConflictAt(i)) {
+                return true;
+            }
+        }
+
+        return false;
     },
 
 
