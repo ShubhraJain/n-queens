@@ -183,18 +183,37 @@
         return false;
     },
 
-    
+
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+        var size = this.get('n');
+        var count = 0;
+        var rowIndex = 0;
+        var col = minorDiagonalColumnIndexAtFirstRow;
+
+        for( ; rowIndex < size && col >= 0; rowIndex++, col-- ) {
+            if( col < size ) {
+            var row = this.get(rowIndex);
+            count += row[col];
+            }
+        }
+
+        return count > 1;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var size = this.get('n');
+
+      for( var i = (2 * size) - 1; i >= 0; i-- ) {
+        if( this.hasMinorDiagonalConflictAt(i) ) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
