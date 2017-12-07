@@ -27,7 +27,9 @@ window.findNRooksSolution = function(n) {
         }
         
         for (var col = 0; col < n; col++) {
+            // toggle the piece and check if there are any conflicts
             board.togglePiece(row, col);
+            // if no conflicts, keep moving forward with this approach.
             if (!board.hasAnyRooksConflicts()) {
                 // if not, recurse on next row
                 var result = findSolution(board, row + 1, n);
@@ -55,7 +57,7 @@ window.countNRooksSolutions = function(n) {
     
         // base case: if finished traversing all rows,
         if (row === n) {
-            // increment the count by 1
+            // increment solution count by 1
             solutionCount++;
             return;
         }
@@ -82,10 +84,34 @@ window.countNRooksSolutions = function(n) {
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of 
 // them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+    var solution = []; //fixme
+    var board = new Board ({'n': n});
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+    if (n === 2 || n === 3) {
+        return board.rows();
+    }  
+
+    var findQueenSolution = function(board, n, row) {
+        if (row === n) {
+            return board.rows();
+        }
+
+        for (var col = 0; col < n; col++) {
+            board.togglePiece(row, col);
+            if (!board.hasAnyQueensConflicts()) {
+                var result = findQueenSolution(board, n, row + 1);
+                if (result) {
+                    return result;
+                }
+            }
+            board.togglePiece(row, col);
+        }
+    };
+
+    solution = findQueenSolution(board, n, 0);
+
+    console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+    return solution;
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
